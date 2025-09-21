@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel - Om Sai</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
+  th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+  th { background-color: #2874f0; color: white; }
+  tr:nth-child(even) { background-color: #f2f2f2; }
+  select, button { padding: 6px; border-radius: 5px; border: 1px solid #ccc; margin-top: 5px; }
+  button { background-color: #4caf50; color: white; border: none; cursor: pointer; }
+  button:hover { background-color: #388e3c; }
+  .admin-header { display: flex; justify-content: space-between; align-items: center; background: #232f3e; color: white; padding: 15px 25px; }
+  .admin-header h2 { margin: 0; }
+  .admin-logout { background: white; color: #232f3e; border: none; padding: 8px 14px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="admin-header">
+  <h2>🛒 Admin Panel - Orders</h2>
+  <button onclick="logout()" class="admin-logout">Logout</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Customer</th>
+      <th>Address</th>
+      <th>Pincode</th>
+      <th>Items</th>
+      <th>Date</th>
+      <th>Payment</th>
+      <th>Delivery</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="orderTable">
+    <tr><td colspan="8">Loading...</td></tr>
+  </tbody>
+</table>
+
+<script>
+  const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+  if (!isAdmin) {
+    alert("Access Denied");
+    window.location.href = "admin-login.html";
+  }
+
+  function logout() {
+    localStorage.removeItem("isAdmin");
+    window.location.href = "admin-login.html";
+  }
+
+  async function fetchOrders() {
+    try {
+      const res = await fetch("/api/orders");
+      const orders = await res.json();
+      const table = document.getElementById("orderTable");
+      if (!Array.isArray(orders) || orders.length === 0) {
+        table.innerHTML = "<tr><td colspan='8'>No orders yet.</td></tr>";
+        return;
+      }
+      table.innerHTML = orders.map(order => `
+        <tr>
+          <td>${order.name}</td>
+          <td>${order.address}</td>
+          <td>${order.pincode}</td>
+          <td>${order.items.map(i => `${i.name} (x${i.qty})`).join("<br>")}</td>
+          <td>${new Date(order.date).toLocaleString()}</td>
+          <td>${order.paymentStatus || "Pending"}</td>
+          <td>${order.deliveryStatus || "Processing"}</td>
+          <td>
+            <select onchange="updateStatus('${order._id}', 'deliveryStatus', this.value)">
+              <option disabled selected>Change Delivery</option>
+              <option>Processing</option>
+              <option>Shipped</option>
+              <option>Out for Delivery</option>
+              <option>Delivered</option>
+            </select><br/>
+            <select onchange="updateStatus('${order._id}', 'paymentStatus', this.value)">
+              <option disabled selected>Change Payment</option>
+              <option>Pending</option>
+              <option>Paid</option>
+              <option>Failed</option>
+            </select>
+          </td>
+        </tr>
+      `).join("");
+    } catch (err) {
+      document.getElementById("orderTable").innerHTML = "<tr><td colspan='8'>Error loading orders.</td></tr>";
+    }
+  }
+
+  async function updateStatus(orderId, field, value) {
+    try {
+      const res = await fetch(`/api/orders/${orderId}/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: value })
+      });
+      if (res.ok) {
+        fetchOrders(); // refresh table
+      } else {
+        alert("❌ Update failed");
+      }
+    } catch {
+      alert("Server error");
+    }
+  }
+
+  fetchOrders();
+  setInterval(fetchOrders, 10000); // auto refresh every 10s
+</script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Om Sai General Stores - Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pO4fG+Taa1w5aUvE+e2F+V7x6D6RxQeKl+gV0EMkE9lC3qhfWxRv8X4lJv++H6K5i2I3pP4kzvQ6sE7P+Q7qg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    /* --- Hero Section --- */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: url('images/hero-bg.jpg') no-repeat center center/cover;
+      padding: 100px 20px;
+      position: relative;
+      color: #fff;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+    .hero-logo {
+      width: 120px;
+      margin-bottom: 20px;
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+    .shop-now-btn {
+      background: #ff9800;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .shop-now-btn:hover {
+      background: #e68900;
+    }
+
+    /* --- Main Header --- */
+    .main-header {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      padding: 15px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-title h1 {
+      font-size: 1.5rem;
+      color: #333;
+    }
+    .main-nav {
+      display: flex;
+      gap: 15px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .main-nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .main-nav a:hover {
+      background: #ff9800;
+      color: #fff;
+    }
+    .nav-link i {
+      font-size: 18px;
+      vertical-align: middle;
+    }
+
+    /* --- Search & Categories --- */
+    .search-container {
+      margin: 10px 0;
+    }
+    #search-bar {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px 12px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+    .category-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .category-nav a {
+      padding: 5px 12px;
+      background: #ff9800;
+      color: #fff;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .category-nav a:hover {
+      background: #e68900;
+    }
+
+    /* --- Product Section --- */
+    .product-section {
+      padding: 40px 20px;
+    }
+    .product-section h2 {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      color: #333;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    /* --- Specials Carousel --- */
+    .special-carousel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .carousel-btn {
+      background: #ff9800;
+      color: #fff;
+      border: none;
+      font-size: 1.5rem;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    .carousel-btn:hover {
+      background: #e68900;
+    }
+
+    /* --- Floating Cashback --- */
+    #cashbackPopup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff9800;
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 999;
+    }
+    #cashbackPopup span {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    /* --- Footer --- */
+    footer {
+      background: #222;
+      color: #fff;
+      padding: 30px 20px;
+    }
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: space-between;
+    }
+    .footer-section h3, .footer-section h4 {
+      margin-bottom: 10px;
+      color: #ff9800;
+    }
+    .footer-section a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .footer-section a:hover {
+      text-decoration: underline;
+    }
+    footer hr {
+      margin: 20px 0;
+      border-color: #555;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .main-header { flex-direction: column; align-items: flex-start; }
+      .main-nav a { margin: 5px 0; }
+      .products { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2rem; }
+      .shop-now-btn { font-size: 0.9rem; padding: 10px 25px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="images/logo.png" alt="Logo" class="hero-logo" />
+      <h1>Your Skin, Your Glow – Om Sai Cosmetics</h1>
+      <p class="hero-subtitle">Premium skincare products delivered at your doorstep</p>
+      <button class="shop-now-btn" onclick="document.querySelector('main').scrollIntoView({behavior:'smooth'})">
+        Shop Now
+      </button>
+    </div>
+  </section>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="logo-title">
+      <img src="images/logo.png" alt="Om Sai Logo" class="logo"/>
+      <h1>Om Sai General Stores</h1>
+    </div>
+
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+      <a href="cart.html" class="nav-link cart-link"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count">0</span></a>
+      <a href="login.html" id="loginLink" class="nav-link login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="register.html" id="registerLink" class="nav-link register-link"><i class="fas fa-user-plus"></i> Register</a>
+      <a href="profile.html" id="profileLink" class="profile-btn nav-link" style="display:none;"><i class="fas fa-user-circle"></i> Profile</a>
+      <a href="admin.html" id="adminLink" class="nav-link" style="display:none;"><i class="fas fa-user-shield"></i> Admin</a>
+      <a href="#" onclick="logout()" id="logoutLink" class="nav-link" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+
+    <div class="search-container">
+      <input type="text" id="search-bar" placeholder="Search for products..." />
+    </div>
+
+    <div class="category-nav">
+      <a href="#serums-products">Serums</a>
+      <a href="#cleansers-products">Cleansers</a>
+      <a href="#facewash-products">Facewash</a>
+      <a href="#moisturizers-products">Moisturizers</a>
+      <a href="#perfumes-products">Perfumes</a>
+      <a href="#powders-products">Powders</a>
+      <a href="#creams-products">Creams</a>
+    </div>
+  </header>
+
+  <!-- Today's Specials -->
+  <section id="specials">
+    <h2>Today's Specials</h2>
+    <div class="special-carousel">
+      <button id="prevBtn" class="carousel-btn">&#10094;</button>
+      <div class="carousel-container" id="specialCarousel"></div>
+      <button id="nextBtn" class="carousel-btn">&#10095;</button>
+    </div>
+    </section>
+
+  <!-- Main Products -->
+  <main>
+    <section class="product-section">
+      <h2>Serums</h2>
+      <div id="serums-products" class="products"></div>
+    </section>
+    <section class="product-section">
+      <h2>Cleansers</h2>
+      <div id="cleansers-products" class="products"></div>
+    </section>
+    <section class="product-section">
+      <h2>Facewash</h2>
+      <div id="facewash-products" class="products"></div>
+    </section>
+    <section class="product-section">
+      <h2>Moisturizers</h2>
+      <div id="moisturizers-products" class="products"></div>
+    </section>
+    <section class="product-section">
+      <h2>Perfumes</h2>
+      <div id="perfumes-products" class="products"></div>
+    </section>
+    <section class="product-section">
+      <h2>Powders</h2>
+      <div id="powders-products" class="products"></div>
+    </section>
+    <section class="product-section">
+      <h2>Creams</h2>
+      <div id="creams-products" class="products"></div>
+    </section>
+  </main>
+
+  <!-- Floating Cashback -->
+  <div id="cashbackPopup">
+    💖 Get ₹50 cashback on your first order!
+    <span onclick="this.parentElement.style.display='none'">✖</span>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Om Sai General Stores</h3>
+        <p>Your trusted store for cosmetics and daily
+        essentials. Fast delivery & great prices!</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="return.html">Return Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Us</h4>
+        <p>📍 Patoda, Maharashtra, India</p>
+        <p>📞 +91 9527179182</p>
+        <p>✉️ support@omsai.com</p>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <p>
+          <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/9527179182" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </p>
+      </div>
+    </div>
+    <hr>
+    <p>&copy; 2025 Om Sai General Stores. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../public/script.js"></script>
+  <script>
+    // Show/hide links based on login
+    document.addEventListener("DOMContentLoaded", function() {
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (user) {
+        document.getElementById("loginLink").style.display = "none";
+        document.getElementById("registerLink").style.display = "none";
+        document.getElementById("profileLink").style.display = "inline-flex";
+        document.getElementById("logoutLink").style.display = "inline-flex";
+        if(user.isAdmin){
+          document.getElementById("adminLink").style.display = "inline-flex";
+        }
+      }
+    });
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      alert("Logged out");
+      location.reload();
+    }
+  </script>
+</body>
+</html>

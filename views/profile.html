@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Profile - Om Sai</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+  }
+  .navbar {
+    background-color: #232f3e;
+    padding: 15px 25px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 25px;
+  }
+  h2 {
+    color: #2874f0;
+    border-bottom: 2px solid #e3f2fd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  .info-box {
+    margin-bottom: 30px;
+  }
+  .info-box label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+  }
+  .info-box input, .info-box textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  textarea {
+    resize: vertical;
+  }
+  .order-history {
+    margin-top: 30px;
+  }
+  .order {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fafafa;
+  }
+  .order p {
+    margin: 5px 0;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #2874f0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    background-color: #1a5fc4;
+  }
+  footer {
+    background: #f0f0f0;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div><i class="fa fa-store"></i> Om Sai General Stores</div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="cart.html">Cart</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2><i class="fa fa-user"></i> My Profile</h2>
+
+  <div class="info-box">
+    <label>Full Name</label>
+    <input type="text" id="name">
+
+    <label>Email</label>
+    <input type="text" id="email" disabled>
+
+    <label>Address</label>
+    <textarea id="address" rows="3"></textarea>
+
+    <label>Pincode</label>
+    <input type="text" id="pincode">
+
+    <button onclick="saveProfile()">Save Profile</button>
+  </div>
+
+  <h2><i class="fa fa-box"></i> My Orders</h2>
+  <div class="order-history" id="orderList">
+    <p>Loading orders...</p>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 Om Sai General Stores | Patoda
+</footer>
+
+<script>
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!user) {
+    alert("Please log in first.");
+    window.location.href = "login.html";
+  } else {
+    // Load saved profile details from localStorage if available
+    const savedProfile = JSON.parse(localStorage.getItem("userProfile_" + user.email)) || {};
+    document.getElementById("name").value = savedProfile.name || user.name || "";
+    document.getElementById("email").value = user.email || "";
+    document.getElementById("address").value = savedProfile.address || "";
+    document.getElementById("pincode").value = savedProfile.pincode || "";
+
+    loadOrders();
+    setInterval(loadOrders, 10000);
+  }
+
+  function saveProfile() {
+    const profileData = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      address: document.getElementById("address").value,
+      pincode: document.getElementById("pincode").value
+    };
+
+    // Save to localStorage
+    localStorage.setItem("userProfile_" + profileData.email, JSON.stringify(profileData));
+
+    // Update loggedInUser name for greeting in other pages
+    const updatedUser = { ...user, name: profileData.name };
+    localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+
+    alert("Profile saved successfully!");
+  }
+
+  function loadOrders() {
+    fetch(`http://localhost:5000/api/orders/user/${user.email}`)
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("orderList");
+        if (!data.length) {
+          container.innerHTML = "<p>No orders yet.</p>";
+        } else {
+          container.innerHTML = data.map(order => `
+            <div class="order">
+              <p><strong>Date:</strong> ${new Date(order.date).toLocaleString()}</p>
+              <p><strong>Delivery Status:</strong> ${order.deliveryStatus}</p>
+              <p><strong>Payment Status:</strong> ${order.paymentStatus}</p>
+              <p><strong>Items:</strong><br>${order.items.map(i => `${i.name} (x${i.qty})`).join("<br>")}</p>
+            </div>
+          `).join("");
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching orders:", err);
+        document.getElementById("orderList").innerHTML = "<p>Failed to load orders.</p>";
+      });
+  }
+
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+    alert("Logged out!");
+    window.location.href = "index.html";
+  }
+</script>
+</body>
+</html>

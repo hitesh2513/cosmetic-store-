@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Orders - Om Sai</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>My Orders</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <section class="orders" id="ordersContainer">
+    Loading your orders...
+  </section>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      alert("Please login first");
+      window.location.href = "login.html";
+    }
+
+    async function fetchOrders() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/orders/user/${user.email}`);
+        const orders = await res.json();
+
+        const container = document.getElementById("ordersContainer");
+        if (orders.length === 0) {
+          container.innerHTML = "You have no orders yet.";
+          return;
+        }
+
+        container.innerHTML = orders.map(order => `
+          <div class="order-card">
+            <h3>Order ID: ${order._id}</h3>
+            <p><strong>Date:</strong> ${new Date(order.date).toLocaleString()}</p>
+            <p><strong>Address:</strong> ${order.address}, ${order.pincode}</p>
+            <p><strong>Payment:</strong> ${order.paymentStatus}</p>
+            <p><strong>Delivery:</strong> ${order.deliveryStatus}</p>
+            <p><strong>Items:</strong><br>${order.items.map(i => `${i.name} x${i.qty}`).join("<br>")}</p>
+          </div>
+        `).join("");
+      } catch (err) {
+        document.getElementById("ordersContainer").innerHTML = "Error loading orders.";
+        console.error(err);
+      }
+    }
+
+    fetchOrders();
+  </script>
+</body>
+</html>

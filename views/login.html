@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login - Om Sai</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #f0f2f5, #e0e0e0);
+    margin: 0;
+    padding: 0;
+  }
+  .auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .auth-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .auth-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #232f3e;
+  }
+  .auth-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+  }
+  .auth-box button {
+    width: 100%;
+    padding: 12px;
+    background: #2874f0;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .auth-box button:hover {
+    background: #1a5fc4;
+  }
+  .auth-box p {
+    text-align: center;
+    margin-top: 15px;
+  }
+  .forgot-link {
+    display: block;
+    text-align: right;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #2874f0;
+    cursor: pointer;
+  }
+  .forgot-link:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="auth-container">
+  <div class="auth-box">
+    <h2><i class="fa fa-user-circle"></i> Login</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <span class="forgot-link" onclick="forgotPassword()">Forgot Password?</span>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="register.html">Register</a></p>
+  </div>
+</div>
+
+<script>
+  // Email/Password login
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (email && password) {
+      localStorage.setItem("loggedInUser", JSON.stringify({ email: email }));
+      alert("Login successful!");
+      window.location.href = "profile.html";
+    } else {
+      alert("Please enter email and password");
+    }
+  });
+
+  // Forgot Password feature (basic)
+  function forgotPassword() {
+    const email = document.getElementById("email").value.trim();
+    if (!email) {
+      alert("Please enter your email first.");
+      return;
+    }
+    // For now: Just simulate sending reset link
+    alert(`A password reset link has been sent to ${email} (simulation).`);
+    // In real backend: send API request to handle password reset
+  }
+</script>
+
+</body>
+</html>
