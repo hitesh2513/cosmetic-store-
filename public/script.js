@@ -1,4 +1,4 @@
-
+// ------------------ Products Data ------------------
 const products = {
   serums: [
     { name: "Vitamin C Serum", price: 599, image: "images/vitaminc.jpg" },
@@ -51,11 +51,7 @@ const products = {
   ]
 };
 
-// Render all categories
-for (let category in products) {
-  renderProducts(`${category}-products`, products[category]);
-}
-
+// ------------------ Render Products ------------------
 function renderProducts(sectionId, items) {
   const container = document.getElementById(sectionId);
   if (!container) return;
@@ -65,13 +61,17 @@ function renderProducts(sectionId, items) {
       <img src="${product.image}" alt="${product.name}" />
       <h4>${product.name}</h4>
       <p>₹${product.price}</p>
-      <button onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">
-        Add to Cart
-      </button>
+      <button onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">Add to Cart</button>
     </div>
   `).join('');
 }
 
+// Render all categories
+for (let category in products) {
+  renderProducts(`${category}-products`, products[category]);
+}
+
+// ------------------ Cart Functions ------------------
 function addToCart(name, price, image) {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   const item = cart.find(p => p.name === name);
@@ -95,9 +95,10 @@ function updateCartBadge() {
 }
 
 document.addEventListener("DOMContentLoaded", updateCartBadge);
- document.getElementById("search-bar").addEventListener("input", function () {
-  const query = this.value.toLowerCase();
 
+// ------------------ Search Function ------------------
+document.getElementById("search-bar").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
   for (let category in products) {
     const filteredItems = products[category].filter(product =>
       product.name.toLowerCase().includes(query)
@@ -105,17 +106,16 @@ document.addEventListener("DOMContentLoaded", updateCartBadge);
     renderProducts(`${category}-products`, filteredItems);
   }
 });
-// Today’s Specials Carousel Animation
+
+// ------------------ Today's Specials Carousel ------------------
 const specialProducts = [
-  { name: "Vitamin C Serum", price: 599, image: "images/vitaminc.jpg" },
-  { name: "Foaming Face Wash", price: 349, image: "images/foaming.jpg" },
-  { name: "Aloe Vera Gel", price: 399, image: "images/aloevera.jpg" },
-  { name: "Bella Vita Luxe", price: 499, image: "images/bella.jpg" }
+  products.serums[0],
+  products.facewash[1],
+  products.moisturizers[0],
+  products.perfumes[1]
 ];
 
 const carousel = document.getElementById('specialCarousel');
-
-// Render specials
 specialProducts.forEach(p => {
   const div = document.createElement('div');
   div.classList.add('product');
@@ -136,12 +136,10 @@ document.getElementById('nextBtn').onclick = () => {
   carousel.scrollBy({ left: 240, behavior: 'smooth' });
 };
 
-// Optional: Auto-scroll animation loop
+// Optional auto-scroll
 let scrollAmount = 0;
 setInterval(() => {
   scrollAmount += 1;
   if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) scrollAmount = 0;
   carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
 }, 50);
-
-
