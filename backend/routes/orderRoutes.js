@@ -1,7 +1,7 @@
 // backend/routes/orderRoutes.js
 const express = require("express");
 const Razorpay = require("razorpay");
-const Order = require('./../models/Order');
+const Order = require('./../models/order');
 const router = express.Router();
 
 const razorpay = new Razorpay({
