@@ -1,31 +1,31 @@
 // ------------------ Products Data ------------------
 const products = {
   serums: [
-    { name: "Vitamin C Serum", price: 599, image: "images/vitaminc.jpg" },
-    { name: "Hyaluronic Acid Serum", price: 699, image: "images/hyaluronic.jpg" },
-    { name: "Niacinamide Serum", price: 649, image: "images/niacinamide.jpg" },
-    { name: "Retinol Serum", price: 749, image: "images/retinol.jpg" },
-    { name: "Brightening Serum", price: 799, image: "images/brightening.jpg" }
+    { name: "Vitamin C Serum", price: 599, image: "/images/vitaminc.jpg" },
+    { name: "Hyaluronic Acid Serum", price: 699, image: "/images/hyaluronic.jpg" },
+    { name: "Niacinamide Serum", price: 649, image: "/images/niacinamide.jpg" },
+    { name: "Retinol Serum", price: 749, image: "/images/retinol.jpg" },
+    { name: "Brightening Serum", price: 799, image: "/images/brightening.jpg" }
   ],
   cleansers: [
-    { name: "Gentle Cleanser", price: 380, image: "images/gentle.jpg" },
-    { name: "Foaming Face Wash", price: 349, image: "images/foaming.jpg" },
-    { name: "Oil Control Cleanser", price: 399, image: "images/oil.jpg" },
-    { name: "Exfoliating Cleanser", price: 870, image: "images/exfoliating.jpg" },
-    { name: "Micellar Cleanser", price: 159, image: "images/micellar.jpg" }
+    { name: "Gentle Cleanser", price: 380, image: "/images/gentle.jpg" },
+    { name: "Foaming Face Wash", price: 349, image: "/images/foaming.jpg" },
+    { name: "Oil Control Cleanser", price: 399, image: "/images/oil.jpg" },
+    { name: "Exfoliating Cleanser", price: 870, image: "/images/exfoliating.jpg" },
+    { name: "Micellar Cleanser", price: 159, image: "/images/micellar.jpg" }
   ],
   facewash: [
-    { name: "Neem Face Wash", price: 199, image: "images/neem.jpg" },
-    { name: "Charcoal Face Wash", price: 249, image: "images/charcoal.jpg" },
-    { name: "Tea Tree Face Wash", price: 299, image: "images/tea.jpg" },
-    { name: "Sandal Face Wash", price: 100, image: "images/sandal.jpg" },
-    { name: "Glow Face Wash", price: 329, image: "images/glow.jpg" }
+    { name: "Neem Face Wash", price: 199, image: "/images/neem.jpg" },
+    { name: "Charcoal Face Wash", price: 249, image: "/images/charcoal.jpg" },
+    { name: "Tea Tree Face Wash", price: 299, image: "/images/tea.jpg" },
+    { name: "Sandal Face Wash", price: 100, image: "/images/sandal.jpg" },
+    { name: "Glow Face Wash", price: 329, image: "/images/glow.jpg" }
   ],
   moisturizers: [
-    { name: "Aloe Vera Gel", price: 399, image: "images/aloevera.jpg" },
-    { name: "Oil-Free Moisturizer", price: 339, image: "images/oilfree.jpg" },
-    { name: "Day Cream SPF30", price: 849, image: "images/day30.jpg" },
-    { name: "Night Repair Cream", price: 499, image: "images/night.jpg" },
+    { name: "Aloe Vera Gel", price: 399, image: "/images/aloevera.jpg" },
+    { name: "Oil-Free Moisturizer", price: 339, image: "/images/oilfree.jpg" },
+    { name: "Day Cream SPF30", price: 849, image: "/images/day30.jpg" },
+    { name: "Night Repair Cream", price: 499, image: "/images/night.jpg" },
     { name: "Hydrating Gel", price: 349, image: "images/hydrate.jpg" }
   ],
   perfumes: [

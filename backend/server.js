@@ -29,7 +29,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use("/api/orders", orderRoutes);
 
 // Serve static frontend files
-app.use(express.static(path.join(__dirname, "../views")));
+app.use(express.static(path.join(__dirname, "../views"))); 
+
+app.use(express.static(path.join(__dirname, "../public")));
+
 
 // For any route not starting with /api, serve index.html (SPA support)
 app.get("*", (req, res) => {
