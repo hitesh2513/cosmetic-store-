@@ -495,4 +495,101 @@ i.fa-cart, i.fa-user, i.fa-sign-out, i.fa-key {
 .carousel-btn:hover {
   background-color: #ffb74d;
 }
+
+
+
+
+
+
+/* ----- General Reset ----- */
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* ----- Hero Section ----- */
+.hero {
+  display: flex;
+  flex-direction: column; /* mobile pe column */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f3f3f3, #ffffff);
+}
+
+.hero img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+/* ----- Products Grid ----- */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  padding: 10px;
+}
+
+.product {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.product:hover {
+  transform: scale(1.05);
+}
+
+.product img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* ----- Buttons ----- */
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+  h1, h2, h3, h4 {
+    font-size: 90%;
+  }
+
+  .hero {
+    padding: 10px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 products per row on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: 1fr; /* 1 product per row on very small screens */
+  }
+}
+
   
