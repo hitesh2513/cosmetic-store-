@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Checkout</title>
+<title>Checkout - Om Sai General Stores</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
@@ -31,25 +31,35 @@
 </div>
 
 <script>
-const API_BASE = "https://cosmetic-store-pmrd.onrender.com";
+const API_BASE = "https://cosmetic-backend-lt5t.onrender.com"; // ✅ Render backend
+
+// ✅ Render cart items
 function renderCart() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   if (cart.length === 0) {
     document.getElementById("cart-summary").innerHTML = "<p>Your cart is empty</p>";
     return;
   }
+
   let total = 0;
-  let html = `<table class='table table-bordered'><tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr>`;
+  let html = `<table class='table table-bordered'>
+    <tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr>`;
   cart.forEach(item => {
-    let sub = item.qty * item.price;
+    const sub = item.qty * item.price;
     total += sub;
-    html += `<tr><td>${item.name}</td><td>${item.qty}</td><td>₹${item.price}</td><td>₹${sub}</td></tr>`;
+    html += `<tr>
+      <td>${item.name}</td>
+      <td>${item.qty}</td>
+      <td>₹${item.price}</td>
+      <td>₹${sub}</td>
+    </tr>`;
   });
   html += `<tr><th colspan="3">Total</th><th>₹${total}</th></tr></table>`;
   document.getElementById("cart-summary").innerHTML = html;
 }
 renderCart();
 
+// ✅ Payment & Order creation logic
 document.getElementById("payBtn").addEventListener("click", async () => {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   if (cart.length === 0) return alert("Cart is empty");
@@ -64,36 +74,61 @@ document.getElementById("payBtn").addEventListener("click", async () => {
     return alert("Please fill all fields");
   }
 
-  const res = await fetch(`${API_BASE}/api/orders`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, mobile, address, pincode, items: cart })
-  });
-  const data = await res.json();
-  if (!data.orderId) return alert("Order creation failed");
+  try {
+    // ✅ Create order on backend
+    const res = await fetch(`${API_BASE}/api/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, mobile, address, pincode, items: cart })
+    });
 
-  const options = {
-    key: data.key,
-    amount: data.amount,
-    currency: "INR",
-    name: "Om Sai General Stores",
-    order_id: data.orderId,
-    handler: async function (response) {
-      await fetch(`${API_BASE}/api/orders/confirm`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_payment_id: response.razorpay_payment_id
-        })
-      });
-      alert("Payment successful! Order placed.");
-      localStorage.removeItem("cart");
-      window.location.href = "my-orders.html";
+    if (!res.ok) throw new Error("Order creation failed");
+    const data = await res.json();
+
+    if (!data || !data.orderId) {
+      alert("Unable to create order. Please try again.");
+      return;
     }
-  };
-  const rzp = new Razorpay(options);
-  rzp.open();
+
+    // ✅ Razorpay checkout
+    const options = {
+      key: data.key,
+      amount: data.amount,
+      currency: "INR",
+      name: "Om Sai General Stores",
+      description: "Payment for your cosmetic products",
+      order_id: data.orderId,
+      handler: async function (response) {
+        try {
+          const confirmRes = await fetch(`${API_BASE}/api/orders/confirm`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id
+            })
+          });
+
+          if (!confirmRes.ok) throw new Error("Confirmation failed");
+          alert("✅ Payment successful! Your order has been placed.");
+          localStorage.removeItem("cart");
+          window.location.href = "my-orders.html";
+        } catch (err) {
+          console.error("Confirm error:", err);
+          alert("Payment successful but order confirmation failed. Please contact support.");
+        }
+      },
+      prefill: { name, email, contact: mobile },
+      theme: { color: "#0d6efd" }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+  } catch (err) {
+    console.error("Payment init error:", err);
+    alert("Something went wrong while starting payment. Try again.");
+  }
 });
 </script>
 

@@ -97,50 +97,52 @@ function updateCartBadge() {
 document.addEventListener("DOMContentLoaded", updateCartBadge);
 
 // ------------------ Search Function ------------------
-document.getElementById("search-bar").addEventListener("input", function () {
-  const query = this.value.toLowerCase();
-  for (let category in products) {
-    const filteredItems = products[category].filter(product =>
-      product.name.toLowerCase().includes(query)
-    );
-    renderProducts(`${category}-products`, filteredItems);
-  }
-});
+const searchBar = document.getElementById("search-bar");
+if (searchBar) {
+  searchBar.addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    for (let category in products) {
+      const filteredItems = products[category].filter(product =>
+        product.name.toLowerCase().includes(query)
+      );
+      renderProducts(`${category}-products`, filteredItems);
+    }
+  });
+}
 
-// ------------------ Today's Specials Carousel ------------------
-const specialProducts = [
-  products.serums[0],
-  products.facewash[1],
-  products.moisturizers[0],
-  products.perfumes[1]
-];
-
+// ------------------ Carousel ------------------
 const carousel = document.getElementById('specialCarousel');
-specialProducts.forEach(p => {
-  const div = document.createElement('div');
-  div.classList.add('product');
-  div.innerHTML = `
-    <img src="${p.image}" alt="${p.name}">
-    <h4>${p.name}</h4>
-    <p>₹${p.price}</p>
-    <button onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">Add to Cart</button>
-  `;
-  carousel.appendChild(div);
-});
+if (carousel) {
+  const specialProducts = [
+    products.serums[0],
+    products.facewash[1],
+    products.moisturizers[0],
+    products.perfumes[1]
+  ];
 
-// Carousel buttons
-document.getElementById('prevBtn').onclick = () => {
-  carousel.scrollBy({ left: -240, behavior: 'smooth' });
-};
-document.getElementById('nextBtn').onclick = () => {
-  carousel.scrollBy({ left: 240, behavior: 'smooth' });
-};
+  specialProducts.forEach(p => {
+    const div = document.createElement('div');
+    div.classList.add('product');
+    div.innerHTML = `
+      <img src="${p.image}" alt="${p.name}">
+      <h4>${p.name}</h4>
+      <p>₹${p.price}</p>
+      <button onclick="addToCart('${p.name}', ${p.price}, '${p.image}')">Add to Cart</button>
+    `;
+    carousel.appendChild(div);
+  });
 
-// Optional auto-scroll
-let scrollAmount = 0;
-setInterval(() => {
-  scrollAmount += 1;
-  if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) scrollAmount = 0;
-  carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
-}, 50);
+  // Carousel buttons
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  if (prevBtn) prevBtn.onclick = () => carousel.scrollBy({ left: -240, behavior: 'smooth' });
+  if (nextBtn) nextBtn.onclick = () => carousel.scrollBy({ left: 240, behavior: 'smooth' });
 
+  // Auto-scroll
+  let scrollAmount = 0;
+  setInterval(() => {
+    scrollAmount += 1;
+    if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) scrollAmount = 0;
+    carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+  }, 50);
+}

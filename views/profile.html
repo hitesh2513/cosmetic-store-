@@ -166,7 +166,7 @@
   }
 
   function loadOrders() {
-    fetch(`http://localhost:5000/api/orders/user/${user.email}`)
+    fetch(`https://cosmetic-backend-lt5t.onrender.com/api/orders/user/${user.email}`)
       .then(res => res.json())
       .then(data => {
         const container = document.getElementById("orderList");
